@@ -14,7 +14,7 @@ LIF spiking baseline and NeuroBench metrics.
 | Split | NSA's published 80/20 split (`x_train.npy`, `x_test.npy`, ...) |
 | Readout | output averaged over time, then argmax |
 
-The data loader downloads NSA's preprocessed `WISDM.zip` from
+The data loader downloads NSA's preprocessed split (four `.npy` files) from
 [Hugging Face](https://huggingface.co/datasets/liyc5929/neuroseqbench/tree/main/neuromorphic_sequential_arena/WISDM)
 into `data/nsa/har/` at the repo root. Using NSA's own split keeps accuracy comparable
 with the NSA paper.
