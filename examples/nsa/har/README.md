@@ -63,17 +63,23 @@ layer sees real-valued input (MACs), every later layer sees spikes (ACs).
 
 ## Results
 
-Feedforward LIF trained with `train.py` defaults (seed 1234) on an RTX 4060 Ti, then
+Both models trained with `train.py` defaults (seed 1234) on an RTX 4060 Ti, then
 evaluated with `benchmark.py` on NSA's test split (6,512 windows).
 
 | Model | Accuracy | NSA paper | Parameters | Activation sparsity | Effective MACs | Effective ACs | Dense SynOps |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | LIF feedforward | 81.62% | 81.27% | 103,954 | 0.803 | 76,800 | 2,528,114 | 20,659,200 |
-| LIF recurrent | pending | 77.32% | | | | | |
+| LIF recurrent | 74.11% | 77.32% | 105,218 | 0.671 | 76,800 | 5,316,493 | 20,883,200 |
 
-SynOps are per sample, summed over all 200 time steps. Effective operations (MACs plus
-ACs) come to about 12.6% of the dense count. The NSA paper column is Table 3 of
+SynOps are per sample, summed over all 200 time steps, and include the recurrent
+weights. Effective operations (MACs plus ACs) come to about 12.6% of the dense count for
+the feedforward model and 25.8% for the recurrent one.
+
+The feedforward model matches the paper. The recurrent model uses the hyperparameters
+from NSA's `HAR/run_all.sh` but lands about 3 points below the paper on a single seed.
+Seed variance or a setting not captured in that script are the likely causes, and more
+seeds are needed to tell which. The NSA paper column is Table 3 of
 [arXiv:2505.22035](https://arxiv.org/abs/2505.22035).
 
-The trained checkpoint is in `model_data/har_lif_ff.pt`, so `python benchmark.py`
-reproduces this row without retraining.
+The trained checkpoints are in `model_data/` (`har_lif_ff.pt`, `har_lif_rec.pt`), so
+`benchmark.py` reproduces both rows without retraining.
