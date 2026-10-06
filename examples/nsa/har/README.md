@@ -63,7 +63,17 @@ layer sees real-valued input (MACs), every later layer sees spikes (ACs).
 
 ## Results
 
-| Model | Accuracy | Parameters | Activation sparsity | Effective ACs | Effective MACs |
-| --- | --- | --- | --- | --- | --- |
-| LIF feedforward | TBD | 103,954 | TBD | TBD | 76,800 |
-| LIF recurrent | TBD | TBD | TBD | TBD | TBD |
+Feedforward LIF trained with `train.py` defaults (seed 1234) on an RTX 4060 Ti, then
+evaluated with `benchmark.py` on NSA's test split (6,512 windows).
+
+| Model | Accuracy | NSA paper | Parameters | Activation sparsity | Effective MACs | Effective ACs | Dense SynOps |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| LIF feedforward | 81.62% | 81.27% | 103,954 | 0.803 | 76,800 | 2,528,114 | 20,659,200 |
+| LIF recurrent | pending | 77.32% | | | | | |
+
+SynOps are per sample, summed over all 200 time steps. Effective operations (MACs plus
+ACs) come to about 12.6% of the dense count. The NSA paper column is Table 3 of
+[arXiv:2505.22035](https://arxiv.org/abs/2505.22035).
+
+The trained checkpoint is in `model_data/har_lif_ff.pt`, so `python benchmark.py`
+reproduces this row without retraining.
